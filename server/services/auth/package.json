@@ -1,21 +1,25 @@
 {
   "name": "auth",
   "version": "1.0.0",
-  "description": "",
+  "description": "Auth Microservice for AI Interviewer Platform",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "firebase-admin": "^14.2.0",
-    "mongoose": "^9.9.1",
+    "ioredis": "^5.4.1",
+    "mongoose": "^9.9.1"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.14"
   }
 }
