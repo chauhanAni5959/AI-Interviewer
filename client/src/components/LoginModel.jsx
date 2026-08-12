@@ -5,12 +5,17 @@ import { FcGoogle } from "react-icons/fc";
 import { HiShieldCheck } from "react-icons/hi2";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/firebase";
+import api from "../utils/axios";
 
 const LoginModel = ({ isOpen, onClose }) => {
   const handleGoogleAuth = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      const token = await result.user.getIdToken()
+      const token = await result.user.getIdToken();
+
+      const response = await api.post("/api/auth/login", { token });
+      onClose();
+      console.log(response.data);
     } catch (error) {
       console.log("Error in Login", error.message);
     }

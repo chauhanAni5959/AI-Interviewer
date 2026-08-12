@@ -1,15 +1,42 @@
 import express from "express";
 import dotenv from "dotenv";
-dotenv.config();
+import cors from "cors";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import proxy from "express-http-proxy";
+import { getCurrentUser } from "./controllers/user.controller";
+import { isAuth } from "./middleware/isAuth";
+
+dotenv.config();
+
 const app = express();
-const PORT = process.env.PORT || 6000;
+
+// CORS configuration
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
+
+app.use(morgan("dev"));
+app.use(cookieParser());
+
+// Root health check endpoint
 app.get("/", (req, res) => {
   res.send("Hello from the Gateway server!");
 });
 
-// http://localhost/api/auth
+// Proxy routes (Place before express.json() if you want proxying to stream raw request bodies reliably)
 app.use("/api/auth", proxy(process.env.AUTH_SERVICE_URL));
+// It is for current user and I have also added the middleware
+app.use("/api/me", isAuth, getCurrentUser);
+
+// Global body parser for non-proxied gateway routes
+app.use(express.json());
+
+const PORT = process.env.PORT || 8000;
+
 app.listen(PORT, () => {
   console.log(`Gateway server is running on port ${PORT}`);
 });
