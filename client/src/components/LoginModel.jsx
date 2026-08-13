@@ -7,15 +7,15 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/firebase";
 import api from "../utils/axios";
 
-const LoginModel = ({ isOpen, onClose }) => {
+const LoginModel = ({ isOpen, onClose, setUser }) => {
   const handleGoogleAuth = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const token = await result.user.getIdToken();
 
       const response = await api.post("/api/auth/login", { token });
+      setUser(response?.data);
       onClose();
-      console.log(response.data);
     } catch (error) {
       console.log("Error in Login", error.message);
     }

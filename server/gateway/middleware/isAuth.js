@@ -1,4 +1,4 @@
-import redis from "../../shared/redis.js";
+import redis from "../../shared/redis/redis.js";
 
 export const isAuth = async (req, res, next) => {
   try {
@@ -9,7 +9,7 @@ export const isAuth = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized!" });
     }
 
-    const session = redis.get(`session:${sessionId}`);
+    const session = await redis.get(`session:${sessionId}`);
 
     if (!session) {
       return res.status(401).json({ message: "Session Expired!" });

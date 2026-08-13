@@ -4,7 +4,7 @@ import { GiArtificialHive } from "react-icons/gi";
 import { FaArrowRight } from "react-icons/fa6";
 import LoginModel from "../components/LoginModel";
 
-const Home = () => {
+const Home = (setUser) => {
   // State to control modal visibility and exit animations
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -47,7 +47,8 @@ const Home = () => {
       </section>
 
       {/* Login Modal with Exit Animations */}
-      <LoginModel isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <LoginModel isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} setUser={setUser} />
+      
     </div>
   );
 };

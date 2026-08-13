@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const Dashboard = () => {
-  return (
-    <div>
-      I am DashBoard
-    </div>
-  )
-}
+const Dashboard = ({ user, setUser }) => {
+  return <div className="">{user.name}</div>;
+};
 
-export default Dashboard
+export default Dashboard;

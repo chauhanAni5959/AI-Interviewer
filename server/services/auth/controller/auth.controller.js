@@ -18,7 +18,7 @@ export const GoogleAuth = async (req, res) => {
     if (!user) {
       user = await User.create({
         firebaseUid: decoded.uid,
-        name: decoded.name,
+        name: decoded.name || decoded.email?.split('@')[0] || "User",
         email: decoded.email,
       });
     }
@@ -27,6 +27,8 @@ export const GoogleAuth = async (req, res) => {
     const sessionId = crypto.randomUUID();
 
     // check if the user is already logged in by checking if the session ID exists in Redis
+    console.log("User object before storing:", user);
+
     await redis.set(
       `session:${sessionId}`,
       JSON.stringify({
@@ -47,7 +49,12 @@ export const GoogleAuth = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      user,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        interviewCoin: user.interviewCoin,
+      },
     });
   } catch (error) {
     res.status(500).json("Google Auth Error: " + error.message);
