@@ -27,7 +27,7 @@ const App = () => {
   if (loading) {
     return (
       <div className="fixed top-0 left-0 w-full z-9999">
-        <div className="h-8 bg-black animate-ping w-full"></div>
+        <div className="h-2 bg-black animate-ping w-full"></div>
       </div>
     );
   }
