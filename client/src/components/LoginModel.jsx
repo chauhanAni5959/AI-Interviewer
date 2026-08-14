@@ -14,7 +14,9 @@ const LoginModel = ({ isOpen, onClose, setUser }) => {
       const token = await result.user.getIdToken();
 
       const response = await api.post("/api/auth/login", { token });
-      setUser(response?.data);
+      console.log(response.data);
+      setUser(response?.data?.user);
+
       onClose();
     } catch (error) {
       console.log("Error in Login", error.message);
