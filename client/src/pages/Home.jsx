@@ -63,7 +63,7 @@ const Home = ({ setUser }) => {
 
       {/* Hero Section */}
       <section className="relative pt-28 pb-20 overflow-hidden bg-[#F8F9FA] min-h-screen flex flex-col items-center justify-center">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full bg-black/5 blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-137.5 h-137.5 rounded-full bg-black/5 blur-[100px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <motion.div
@@ -114,7 +114,7 @@ const Home = ({ setUser }) => {
             >
               <span>Get started for free</span>
               <FaArrowRight size={11} />
-              <span className="absolute inset-0 bg-gradient-to-br from-white/12 via-transparent to-transparent pointer-events-none rounded-xl" />
+              <span className="absolute inset-0 bg-linear-to-br from-white/12 via-transparent to-transparent pointer-events-none rounded-xl" />
             </motion.button>
           </motion.div>
         </div>
@@ -170,7 +170,7 @@ const Home = ({ setUser }) => {
                 whileHover={{ y: -6, scale: 1.02 }}
                 className="group relative bg-[#0A0A0A] border border-white/10 rounded-2xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:border-white/25 hover:shadow-[0_12px_40px_rgba(0,0,0,0.25)] transition-all duration-300 cursor-pointer overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
                 <div className="relative z-10">
                   <div className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center text-white mb-5 group-hover:bg-white/15 transition-colors">

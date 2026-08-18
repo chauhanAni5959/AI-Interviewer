@@ -4,15 +4,34 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import { getCurrentUser } from "./apis/user.api";
 
+const STORAGE_KEY = "ai_interviewer_user";
+
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      const storedUser = localStorage.getItem(STORAGE_KEY);
+      return storedUser ? JSON.parse(storedUser) : null;
+    } catch (error) {
+      console.error("Failed to parse stored user:", error);
+      return null;
+    }
+  });
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }, [user]);
 
   useEffect(() => {
     const getUser = async () => {
       try {
         const data = await getCurrentUser();
-        setUser(data?.user || null);
+        const currentUser = data?.user || null;
+        setUser(currentUser || user || null);
       } catch (error) {
         console.error("Failed to fetch user:", error);
         setUser(null);

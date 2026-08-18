@@ -4,10 +4,15 @@ import { FaX } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { HiShieldCheck } from "react-icons/hi2";
 import { signInWithPopup } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import { auth, provider } from "../utils/firebase";
 import api from "../utils/axios";
 
+const STORAGE_KEY = "ai_interviewer_user";
+
 const LoginModel = ({ isOpen, onClose, setUser }) => {
+  const navigate = useNavigate();
+
   const handleGoogleAuth = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -15,9 +20,14 @@ const LoginModel = ({ isOpen, onClose, setUser }) => {
 
       const response = await api.post("/api/auth/login", { token });
       console.log(response.data);
-      setUser(response?.data?.user);
 
-      onClose();
+      const loggedInUser = response?.data?.user;
+      if (loggedInUser) {
+        setUser(loggedInUser);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(loggedInUser));
+        onClose();
+        navigate("/dashboard", { replace: true });
+      }
     } catch (error) {
       console.log("Error in Login", error.message);
     }
