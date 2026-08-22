@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import { getCurrentUser } from "./apis/user.api";
+import Scorer from "./pages/Scorer";
 
 const STORAGE_KEY = "ai_interviewer_user";
 
@@ -61,6 +62,12 @@ const App = () => {
         path="/"
         element={user ? <Navigate to="/dashboard" replace /> : <Home setUser={setUser} />}
       />
+
+      <Route
+        path="/scorer"
+        element={user ? <Scorer user={user} setUser={setUser} /> : <Navigate to="/" replace />}
+      />
+      
     </Routes>
   );
 };

@@ -16,7 +16,7 @@ import { HiSparkles } from "react-icons/hi2";
 const navAgents = [
   { id: "resume-builder", name: "Resume Builder", icon: FiFileText, path: "/resume" },
   { id: "roadmap-builder", name: "Roadmap Builder", icon: FiMap, path: "/roadmap" },
-  { id: "resume-scorer", name: "Resume Scorer", icon: FiStar, path: "/resume-scorer" },
+  { id: "resume-scorer", name: "Resume Scorer", icon: FiStar, path: "/scorer" },
 ];
 
 const Sidebar = ({
