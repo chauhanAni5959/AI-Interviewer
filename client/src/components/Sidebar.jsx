@@ -14,9 +14,9 @@ import { GiArtificialHive } from "react-icons/gi";
 import { HiSparkles } from "react-icons/hi2";
 
 const navAgents = [
-  { id: "resume-builder", name: "Resume Builder", icon: FiFileText, path: "/agents/resume-builder" },
-  { id: "roadmap-builder", name: "Roadmap Builder", icon: FiMap, path: "/agents/roadmap-builder" },
-  { id: "resume-scorer", name: "Resume Scorer", icon: FiStar, path: "/agents/resume-scorer" },
+  { id: "resume-builder", name: "Resume Builder", icon: FiFileText, path: "/resume" },
+  { id: "roadmap-builder", name: "Roadmap Builder", icon: FiMap, path: "/roadmap" },
+  { id: "resume-scorer", name: "Resume Scorer", icon: FiStar, path: "/resume-scorer" },
 ];
 
 const Sidebar = ({

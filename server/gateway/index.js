@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import proxy from "express-http-proxy";
 import { getCurrentUser } from "./controllers/user.controller.js";
 import { isAuth } from "./middleware/isAuth.js";
+import { proxyWithHeader } from "./utils/proxyWithHeaders.js";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 
 // Proxy routes (Place before express.json() if you want proxying to stream raw request bodies reliably)
 app.use("/api/auth", proxy(process.env.AUTH_SERVICE_URL));
+app.use("/api/resume", isAuth, proxyWithHeader(process.env.RESUME_SERVICE_URL));
 // It is for current user and I have also added the middleware
 app.get("/api/me", isAuth, getCurrentUser);
 

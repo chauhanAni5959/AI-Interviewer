@@ -11,7 +11,7 @@ app.use(cookieParser());
 
 const PORT = process.env.PORT || 6001;
 
-app.get("/", (req, res) => {
+app.get("/", (req, res) => {x
   res.send("Hello from the Auth server!");
 });
 
