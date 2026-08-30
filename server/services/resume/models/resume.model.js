@@ -10,7 +10,7 @@ const resumeSchema = new mongoose.Schema(
     },
     extractedName: {
       type: String,
-      required: true,
+      default: "",
     },
     score: {
       type: Number,
@@ -33,7 +33,7 @@ const resumeSchema = new mongoose.Schema(
       default: "",
     },
     education: {
-      type: [String],
+      type: [Object],
       default: [],
     },
     skills: {
@@ -41,11 +41,11 @@ const resumeSchema = new mongoose.Schema(
       default: [],
     },
     projects: {
-      type: [String],
+      type: [Object],
       default: [],
     },
     experience: {
-      type: [String],
+      type: [Object],
       default: [],
     },
     strengths: {

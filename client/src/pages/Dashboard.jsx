@@ -41,7 +41,6 @@ const Dashboard = ({ user, setUser }) => {
 
       {/* Main Viewport Container */}
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-        
         {/* Mobile Top Navigation Bar (Only visible on small viewports < 768px) */}
         <header className="md:hidden flex items-center justify-between px-4 h-14 border-b border-[#EFEFEF] bg-white shrink-0 z-20">
           <div className="flex items-center gap-3">
@@ -53,7 +52,7 @@ const Dashboard = ({ user, setUser }) => {
               <FiMenu size={20} />
             </button>
 
-            <div 
+            <div
               onClick={() => navigate("/dashboard")}
               className="flex items-center gap-2 cursor-pointer"
             >
@@ -68,7 +67,7 @@ const Dashboard = ({ user, setUser }) => {
 
           <div className="flex items-center gap-2">
             {/* Quick Mobile Coin Pill */}
-            <div 
+            <div
               onClick={() => navigate("/pricing")}
               className="flex items-center gap-1.5 bg-[#141414] text-white px-2.5 py-1 rounded-lg text-xs font-semibold cursor-pointer"
             >
@@ -97,7 +96,9 @@ const Dashboard = ({ user, setUser }) => {
             {/* User Greeting Title */}
             <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111111] tracking-tight flex items-center gap-2">
               <span className="truncate">Hello, {firstName}</span>
-              <span className="inline-block select-none animate-bounce">👋</span>
+              <span className="inline-block select-none animate-bounce">
+                👋
+              </span>
             </h1>
           </div>
         </main>
