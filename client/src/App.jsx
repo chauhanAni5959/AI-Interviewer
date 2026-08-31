@@ -4,6 +4,10 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import { getCurrentUser } from "./apis/user.api";
 import Scorer from "./pages/Scorer";
+import { useDispatch } from "react-redux";
+import { setResume } from "./redux/resumeSlice";
+import { getResume } from "./apis/resume.api";
+import ResumeBuilder from "./pages/ResumeBuilder";
 
 const STORAGE_KEY = "ai_interviewer_user";
 
@@ -18,6 +22,7 @@ const App = () => {
     }
   });
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (user) {
@@ -44,6 +49,16 @@ const App = () => {
     getUser();
   }, []);
 
+  useEffect(() => {
+    const getResumeData = async () => {
+      const result = await getResume()
+      dispatch(setResume(result.data))
+    };
+
+    getResumeData()
+
+  }, []);
+
   if (loading) {
     return (
       <div className="fixed top-0 left-0 w-full z-9999">
@@ -56,18 +71,46 @@ const App = () => {
     <Routes>
       <Route
         path="/dashboard"
-        element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/" replace />}
+        element={
+          user ? (
+            <Dashboard user={user} setUser={setUser} />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
       />
       <Route
         path="/"
-        element={user ? <Navigate to="/dashboard" replace /> : <Home setUser={setUser} />}
+        element={
+          user ? (
+            <Navigate to="/dashboard" replace />
+          ) : (
+            <Home setUser={setUser} />
+          )
+        }
       />
 
       <Route
         path="/scorer"
-        element={user ? <Scorer user={user} setUser={setUser} /> : <Navigate to="/" replace />}
+        element={
+          user ? (
+            <Scorer user={user} setUser={setUser} />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
       />
-      
+
+      <Route
+        path="/resume"
+        element={
+          user ? (
+            <ResumeBuilder user={user} setUser={setUser} />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
+      />
     </Routes>
   );
 };
