@@ -75,40 +75,41 @@ function ResumeForm({ step, data = {}, setData }) {
     setData((prev) => ({ ...prev, [key]: val }));
   };
 
-  const handleExperienceChange = (index, field, val) => {
+  // Helper for updating array-of-objects items
+  const handleArrayItemChange = (listKey, index, field, val) => {
     setData((prev) => {
-      const updatedExp = [...(prev.experience || [])];
-      updatedExp[index] = { ...updatedExp[index], [field]: val };
-      return { ...prev, experience: updatedExp };
+      const updatedList = [...(prev[listKey] || [])];
+      updatedList[index] = { ...updatedList[index], [field]: val };
+      return { ...prev, [listKey]: updatedList };
     });
   };
 
-  const handleAddExperience = () => {
+  // Helper for adding new item to an array field
+  const handleAddItem = (listKey, template) => {
     setData((prev) => ({
       ...prev,
-      experience: [
-        ...(prev.experience || []),
-        { company: "", role: "", duration: "", responsibilities: "" },
-      ],
+      [listKey]: [...(prev[listKey] || []), template],
     }));
   };
 
-  const handleRemoveExperience = (indexToRemove) => {
+  // Helper for deleting an item by index
+  const handleRemoveItem = (listKey, indexToRemove) => {
     setData((prev) => ({
       ...prev,
-      experience: (prev.experience || []).filter((_, i) => i !== indexToRemove),
+      [listKey]: (prev[listKey] || []).filter((_, i) => i !== indexToRemove),
     }));
   };
 
+  // Step 1: Personal Info
   if (step === 1) {
     return (
       <div className="flex flex-col gap-3">
         <Input
           label="Full Name"
-          name="fullName"
+          name="name"
           placeholder="Animesh Singh"
           onChange={handleFieldChange}
-          value={data.fullName}
+          value={data.name}
         />
         <Input
           label="Email"
@@ -133,7 +134,14 @@ function ResumeForm({ step, data = {}, setData }) {
           value={data.location}
         />
         <Input
-          label="GitHub"
+          label="LinkedIn"
+          name="linkedin"
+          placeholder="linkedin.com/in/example"
+          onChange={handleFieldChange}
+          value={data.linkedin}
+        />
+        <Input
+          label="GitHub / Portfolio"
           name="github"
           placeholder="github.com/example"
           onChange={handleFieldChange}
@@ -143,24 +151,26 @@ function ResumeForm({ step, data = {}, setData }) {
     );
   }
 
+  // Step 2: Summary
   if (step === 2) {
     return (
       <div className="flex flex-col gap-3">
         <TextArea
-          label="Summary"
+          label="Professional Summary"
           name="summary"
-          rows={4}
-          placeholder="A brief summary about yourself..."
+          rows={5}
+          placeholder="Results-driven software engineer with experience building scalable microservices..."
           onChange={handleFieldChange}
           value={data.summary}
         />
         <p className="text-[10px] text-black/50">
-          Leave empty to skip this section
+          Leave empty to skip or keep it concise for standard ATS scoring.
         </p>
       </div>
     );
   }
 
+  // Step 3: Skills (comma-separated string)
   if (step === 3) {
     return (
       <div className="flex flex-col gap-3">
@@ -168,7 +178,7 @@ function ResumeForm({ step, data = {}, setData }) {
           label="Skills (comma separated)"
           name="skills"
           rows={4}
-          placeholder="JavaScript, React, Node.js, Python"
+          placeholder="JavaScript, React, Node.js, Express, MongoDB, Redis, Docker, AWS"
           onChange={handleFieldChange}
           value={data.skills}
         />
@@ -177,6 +187,7 @@ function ResumeForm({ step, data = {}, setData }) {
     );
   }
 
+  // Step 4: Experience (array of objects)
   if (step === 4) {
     const experiences = data.experience || [];
 
@@ -184,52 +195,272 @@ function ResumeForm({ step, data = {}, setData }) {
       <div className="flex flex-col gap-3">
         {experiences.length === 0 && (
           <p className="text-[10px] text-black/50">
-            No experience added yet. Click below to add.
+            No experience entries added yet. Click below to add your job history.
           </p>
         )}
 
         {experiences.map((exp, index) => (
           <EntryCard
             key={index}
-            onRemove={() => handleRemoveExperience(index)}
+            onRemove={() => handleRemoveItem("experience", index)}
           >
             <Input
               label="Company"
               name="company"
-              placeholder="ABC Technology"
+              placeholder="TechNova Solutions"
               value={exp.company}
-              onChange={(name, val) => handleExperienceChange(index, name, val)}
+              onChange={(name, val) =>
+                handleArrayItemChange("experience", index, name, val)
+              }
             />
             <Input
               label="Role"
               name="role"
-              placeholder="Software Engineer"
+              placeholder="Backend Developer"
               value={exp.role}
-              onChange={(name, val) => handleExperienceChange(index, name, val)}
+              onChange={(name, val) =>
+                handleArrayItemChange("experience", index, name, val)
+              }
             />
             <Input
               label="Duration"
               name="duration"
-              placeholder="Jan 2020 - Present"
+              placeholder="Jan 2023 - Present"
               value={exp.duration}
-              onChange={(name, val) => handleExperienceChange(index, name, val)}
+              onChange={(name, val) =>
+                handleArrayItemChange("experience", index, name, val)
+              }
             />
             <TextArea
               label="Responsibilities"
               name="responsibilities"
-              placeholder="Describe your responsibilities..."
+              rows={3}
+              placeholder="• Architected microservices with 99.9% uptime&#10;• Decreased read latency with Redis"
               value={exp.responsibilities}
-              onChange={(name, val) => handleExperienceChange(index, name, val)}
+              onChange={(name, val) =>
+                handleArrayItemChange("experience", index, name, val)
+              }
             />
           </EntryCard>
         ))}
 
         <button
           type="button"
-          onClick={handleAddExperience}
+          onClick={() =>
+            handleAddItem("experience", {
+              company: "",
+              role: "",
+              duration: "",
+              responsibilities: "",
+            })
+          }
           className="flex items-center justify-center gap-1.5 w-full py-2.5 rounded-lg border-2 border-dashed border-black/20 text-xs font-semibold text-black/70 hover:border-black/50 hover:text-black transition-colors cursor-pointer"
         >
           <FiPlus size={14} /> Add Experience
+        </button>
+      </div>
+    );
+  }
+
+  // Step 5: Projects (array of objects)
+  if (step === 5) {
+    const projects = data.projects || [];
+
+    return (
+      <div className="flex flex-col gap-3">
+        {projects.length === 0 && (
+          <p className="text-[10px] text-black/50">
+            No projects added yet. Click below to add projects.
+          </p>
+        )}
+
+        {projects.map((proj, index) => (
+          <EntryCard
+            key={index}
+            onRemove={() => handleRemoveItem("projects", index)}
+          >
+            <Input
+              label="Project Title"
+              name="title"
+              placeholder="AI Interviewer Platform"
+              value={proj.title}
+              onChange={(name, val) =>
+                handleArrayItemChange("projects", index, name, val)
+              }
+            />
+            <Input
+              label="Tech Stack"
+              name="techStack"
+              placeholder="React, Node.js, Express, MongoDB, Redis"
+              value={proj.techStack}
+              onChange={(name, val) =>
+                handleArrayItemChange("projects", index, name, val)
+              }
+            />
+            <Input
+              label="Project Link / Repo"
+              name="link"
+              placeholder="https://github.com/user/project"
+              value={proj.link}
+              onChange={(name, val) =>
+                handleArrayItemChange("projects", index, name, val)
+              }
+            />
+            <TextArea
+              label="Description"
+              name="description"
+              rows={3}
+              placeholder="Engineered end-to-end resume scoring pipelines using Groq APIs and LangChain..."
+              value={proj.description}
+              onChange={(name, val) =>
+                handleArrayItemChange("projects", index, name, val)
+              }
+            />
+          </EntryCard>
+        ))}
+
+        <button
+          type="button"
+          onClick={() =>
+            handleAddItem("projects", {
+              title: "",
+              techStack: "",
+              link: "",
+              description: "",
+            })
+          }
+          className="flex items-center justify-center gap-1.5 w-full py-2.5 rounded-lg border-2 border-dashed border-black/20 text-xs font-semibold text-black/70 hover:border-black/50 hover:text-black transition-colors cursor-pointer"
+        >
+          <FiPlus size={14} /> Add Project
+        </button>
+      </div>
+    );
+  }
+
+  // Step 6: Education (array of objects)
+  if (step === 6) {
+    const educations = data.education || [];
+
+    return (
+      <div className="flex flex-col gap-3">
+        {educations.length === 0 && (
+          <p className="text-[10px] text-black/50">
+            No education added yet. Click below to add degrees or certifications.
+          </p>
+        )}
+
+        {educations.map((edu, index) => (
+          <EntryCard
+            key={index}
+            onRemove={() => handleRemoveItem("education", index)}
+          >
+            <Input
+              label="Institution / University"
+              name="institution"
+              placeholder="AKTU"
+              value={edu.institution}
+              onChange={(name, val) =>
+                handleArrayItemChange("education", index, name, val)
+              }
+            />
+            <Input
+              label="Degree / Course"
+              name="degree"
+              placeholder="B.Tech in Computer Science"
+              value={edu.degree}
+              onChange={(name, val) =>
+                handleArrayItemChange("education", index, name, val)
+              }
+            />
+            <Input
+              label="Duration / Year"
+              name="duration"
+              placeholder="2020 - 2024"
+              value={edu.duration}
+              onChange={(name, val) =>
+                handleArrayItemChange("education", index, name, val)
+              }
+            />
+            <Input
+              label="Grade / Score"
+              name="score"
+              placeholder="8.2 CGPA or 80%"
+              value={edu.score}
+              onChange={(name, val) =>
+                handleArrayItemChange("education", index, name, val)
+              }
+            />
+          </EntryCard>
+        ))}
+
+        <button
+          type="button"
+          onClick={() =>
+            handleAddItem("education", {
+              institution: "",
+              degree: "",
+              duration: "",
+              score: "",
+            })
+          }
+          className="flex items-center justify-center gap-1.5 w-full py-2.5 rounded-lg border-2 border-dashed border-black/20 text-xs font-semibold text-black/70 hover:border-black/50 hover:text-black transition-colors cursor-pointer"
+        >
+          <FiPlus size={14} /> Add Education
+        </button>
+      </div>
+    );
+  }
+
+  // Step 7: Additional Information (array of objects)
+  if (step === 7) {
+    const additional = data.additionalInfo || [];
+
+    return (
+      <div className="flex flex-col gap-3">
+        {additional.length === 0 && (
+          <p className="text-[10px] text-black/50">
+            No additional info added yet. Add certifications, awards, or languages below.
+          </p>
+        )}
+
+        {additional.map((item, index) => (
+          <EntryCard
+            key={index}
+            onRemove={() => handleRemoveItem("additionalInfo", index)}
+          >
+            <Input
+              label="Category / Heading"
+              name="title"
+              placeholder="Certifications, Achievements, or Languages"
+              value={item.title}
+              onChange={(name, val) =>
+                handleArrayItemChange("additionalInfo", index, name, val)
+              }
+            />
+            <TextArea
+              label="Details / Description"
+              name="detail"
+              rows={3}
+              placeholder="AWS Certified Developer Associate, LeetCode 400+ problems solved, Hindi & English"
+              value={item.detail}
+              onChange={(name, val) =>
+                handleArrayItemChange("additionalInfo", index, name, val)
+              }
+            />
+          </EntryCard>
+        ))}
+
+        <button
+          type="button"
+          onClick={() =>
+            handleAddItem("additionalInfo", {
+              title: "",
+              detail: "",
+            })
+          }
+          className="flex items-center justify-center gap-1.5 w-full py-2.5 rounded-lg border-2 border-dashed border-black/20 text-xs font-semibold text-black/70 hover:border-black/50 hover:text-black transition-colors cursor-pointer"
+        >
+          <FiPlus size={14} /> Add Extra Section
         </button>
       </div>
     );

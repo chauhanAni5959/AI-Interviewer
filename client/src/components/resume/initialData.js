@@ -21,6 +21,9 @@ const initialData = {
 
   // Step 6 - Education (array of objects)
   education: [],
+
+  // Step 7 - Additional Information (array of objects)
+  additionalInfo: [],
 };
 
 
