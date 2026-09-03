@@ -1,12 +1,52 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiPrinter, FiX } from "react-icons/fi";
+import { FiPrinter, FiX, FiLoader } from "react-icons/fi";
 import ResumePaperPreview from "./ResumePaperPreview";
+// Adjust this import to wherever your API call function is defined:
+import { useCoins } from "../../apis/user.api.js";
 
-const ResumePreviewModal = memo(function ResumePreviewModal({ isOpen, onClose, data }) {
-  const handlePrint = useCallback(() => {
-    window.print();
-  }, []);
+const ResumePreviewModal = memo(function ResumePreviewModal({
+  isOpen,
+  onClose,
+  data,
+  setUser, // Passed from parent
+}) {
+  const [loading, setLoading] = useState(false);
+
+  const handlePrint = useCallback(async () => {
+    if (loading) return;
+
+    try {
+      setLoading(true);
+
+      // 1. Deduct coins first
+      const res = await useCoins({ coins: 10, action: "resume-preview" });
+
+      if (res?.success) {
+        // 2. Update user state (backend returns `remainingCoins`)
+        if (setUser) {
+          setUser((prev) => ({
+            ...prev,
+            interviewCoin: res.remainingCoins,
+          }));
+        }
+
+        // 3. Trigger browser print after successful deduction
+        window.print();
+      } else {
+        alert(
+          res?.message || "Insufficient coins or failed to process request.",
+        );
+      }
+    } catch (error) {
+      console.error("Print/Coin deduction error:", error);
+      alert(
+        error.response?.data?.message || "Failed to process print request.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, setUser]);
 
   return (
     <AnimatePresence>
@@ -31,11 +71,16 @@ const ResumePreviewModal = memo(function ResumePreviewModal({ isOpen, onClose, d
               <div className="flex items-center gap-2">
                 <button
                   type="button"
+                  disabled={loading}
                   onClick={handlePrint}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-neutral-300 hover:bg-neutral-50 text-neutral-800 transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-neutral-300 hover:bg-neutral-50 text-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
-                  <FiPrinter size={13} />
-                  <span>Print / PDF</span>
+                  {loading ? (
+                    <FiLoader className="animate-spin" size={13} />
+                  ) : (
+                    <FiPrinter size={13} />
+                  )}
+                  <span>{loading ? "Processing..." : "Print / PDF"}</span>
                 </button>
 
                 <button

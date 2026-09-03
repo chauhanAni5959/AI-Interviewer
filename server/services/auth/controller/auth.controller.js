@@ -18,7 +18,7 @@ export const GoogleAuth = async (req, res) => {
     if (!user) {
       user = await User.create({
         firebaseUid: decoded.uid,
-        name: decoded.name || decoded.email?.split('@')[0] || "User",
+        name: decoded.name || decoded.email?.split("@")[0] || "User",
         email: decoded.email,
       });
     }
@@ -84,5 +84,63 @@ export const logOut = async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+};
+
+export const useCoins = async (req, res) => {
+  try {
+    const sessionId = req.cookies?.session;
+    if (!sessionId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const session = await redis.get(`session:${sessionId}`);
+    const sessionData = JSON.parse(session);
+    const { coins, action } = req.body;
+
+    if (!coins) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Coins not provided" });
+    }
+
+    const user = await User.findById(sessionData.userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    if (user.interviewCoin < coins) {
+      return res.status(403).json({
+        success: false,
+        message: "Insufficient coins. Please purchase more coins.",
+        interviewCoin: user.interviewCoin,
+      });
+    }
+
+    user.interviewCoin -= coins;
+    await user.save();
+
+    await redis.set(
+      `session:${sessionId}`,
+      JSON.stringify({
+        userId: user._id,
+        name: user.name,
+        email: user.email,
+        interviewCoin: user.interviewCoin,
+      }),
+      "EX",
+      7 * 24 * 60 * 60,
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Interview coins updated successfully.",
+      action,
+      interviewCoin: user.interviewCoin,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
   }
 };

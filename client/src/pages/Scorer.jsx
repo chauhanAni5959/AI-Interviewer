@@ -16,6 +16,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import api from "../utils/axios.js";
 import { setResume } from "../redux/resumeSlice.js";
+import {useCoins} from "../apis/user.api.js";
 
 // Animation Variants
 const containerVariants = {
@@ -79,7 +80,13 @@ const Scorer = ({ user, setUser }) => {
     }
     try {
       setLoading(true);
+
+      const coinResponse = await useCoins({ coins: 10 , action: "resume-scorer" });
+      setUser((prev)=>({
+        ...prev,interviewCoin:coinResponse?.interviewCoin
+      }));
       const formData = new FormData();
+
       formData.append("resume", file);
 
       const response = await api.post("/api/resume/upload", formData, {
