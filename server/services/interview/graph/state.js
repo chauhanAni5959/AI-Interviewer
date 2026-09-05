@@ -14,3 +14,6 @@ const InterviewState = Annotation.Root({
   report: Annotation(),
   completed: Annotation(),
 });
+
+
+export default InterviewState;

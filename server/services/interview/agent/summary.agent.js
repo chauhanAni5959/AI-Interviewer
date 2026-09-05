@@ -1,7 +1,7 @@
 import llm from "../config/llm.js";
 import summaryPrompt from "../prompts/summaryPrompt.js";
 
-export const feedbackAgent = async (data) => {
+export const summaryAgent = async (data) => {
   try {
     const prompt = summaryPrompt(data);
 
