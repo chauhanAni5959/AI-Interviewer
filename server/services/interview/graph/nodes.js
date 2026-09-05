@@ -1,6 +1,6 @@
-import { feedbackAgent } from "../agent/feedback.agent";
-import { interviewAgent } from "../agent/interview.agent";
-import { summaryAgent } from "../agent/summary.agent";
+import { feedbackAgent } from "../agent/feedback.agent.js";
+import { interviewAgent } from "../agent/interview.agent.js";
+import { summaryAgent } from "../agent/summary.agent.js";
 
 export async function interviewNode(state) {
   const questions = await interviewAgent({

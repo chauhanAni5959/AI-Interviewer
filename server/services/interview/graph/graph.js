@@ -24,7 +24,7 @@ function feedbackRouter(state) {
   if (state.completed) {
     return "summaryAgent";
   }
-  return "END";
+  return END;
 }
 
 const graph = new StateGraph(InterviewState)
@@ -55,7 +55,7 @@ const graph = new StateGraph(InterviewState)
 )
 
 .addEdge(
-    summaryAgent, 
+  "summaryAgent", 
     END
 )
 .compile()
