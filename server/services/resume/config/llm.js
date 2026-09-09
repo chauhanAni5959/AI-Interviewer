@@ -6,11 +6,11 @@ import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
 if (!apiKey) {
-  throw new Error("GEMINI_API_KEY is missing from environment variables.");
+  throw new Error("GEMINI_API_KEY or GOOGLE_API_KEY is missing from environment variables.");
 }
 
 const llm = new ChatGoogleGenerativeAI({
-  model: "gemini-3.7-flash",
+  model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
   apiKey: apiKey,
   temperature: 0.1,
   maxOutputTokens: 2500,

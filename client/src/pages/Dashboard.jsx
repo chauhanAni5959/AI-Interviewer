@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Sidebar from "../components/SideBar";
+import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { FiMenu, FiPlus } from "react-icons/fi";
 import { GiArtificialHive } from "react-icons/gi";

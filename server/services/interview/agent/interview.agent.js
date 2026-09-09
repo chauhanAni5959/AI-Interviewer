@@ -4,10 +4,10 @@ import technicalInterviewPrompt from "../prompts/technicalInterviewPrompt.js";
 
 export const interviewAgent = async (data) => {
   try {
-    const prompt =
-      data?.type.toLowerCase() === "hr"
-        ? hrInterviewPrompt(data)
-        : technicalInterviewPrompt;
+    const isHrInterview = data?.type?.toLowerCase() === "hr";
+    const prompt = isHrInterview
+      ? hrInterviewPrompt(data)
+      : technicalInterviewPrompt(data);
 
     const response = await llm.invoke(prompt)
     const cleaned = response.content
@@ -17,8 +17,7 @@ export const interviewAgent = async (data) => {
 
     return JSON.parse(cleaned)
   } catch (error) {
-    console.log("Interview Agent Parse Error!");
-    console.log(response.content);
+    console.error("Interview Agent Parse Error!", error);
     throw new Error("Failed to generate interview questions!")
   }
 };

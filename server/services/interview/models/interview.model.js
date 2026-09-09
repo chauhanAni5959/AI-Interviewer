@@ -59,7 +59,7 @@ const questionsSchema = new mongoose.Schema(
     },
     userAnswer: {
       type: String,
-      required: true,
+      default: "",
     },
     difficulty: {
       type: String,
@@ -81,7 +81,7 @@ const questionsSchema = new mongoose.Schema(
 
 const interviewSchema = new mongoose.Schema(
   {
-    userid: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },

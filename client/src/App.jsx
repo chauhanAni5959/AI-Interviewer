@@ -8,6 +8,9 @@ import { useDispatch } from "react-redux";
 import { setResume } from "./redux/resumeSlice";
 import { getResume } from "./apis/resume.api";
 import ResumeBuilder from "./pages/ResumeBuilder";
+import InterviewStart from "./pages/InterviewStart";
+import InterviewPage from "./pages/InterviewPage";
+import InterviewReport from "./pages/InterviewReport";
 
 const STORAGE_KEY = "ai_interviewer_user";
 
@@ -108,6 +111,39 @@ const App = () => {
         element={
           user ? (
             <ResumeBuilder user={user} setUser={setUser} />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
+      />
+
+      <Route
+        path="/interview"
+        element={
+          user ? (
+            <InterviewStart user={user} setUser={setUser} />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
+      />
+
+      <Route
+        path="/interview/:id"
+        element={
+          user ? (
+            <InterviewPage user={user} setUser={setUser} />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
+      />
+
+      <Route
+        path="/interview/:id/report"
+        element={
+          user ? (
+            <InterviewReport user={user} setUser={setUser} />
           ) : (
             <Navigate to="/" replace />
           )
