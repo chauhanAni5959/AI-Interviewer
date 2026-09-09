@@ -5,7 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { HiShieldCheck } from "react-icons/hi2";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, provider } from "../utils/firebase";
+import { getFirebaseAuth, provider } from "../utils/firebase";
 import api from "../utils/axios";
 
 const STORAGE_KEY = "ai_interviewer_user";
@@ -15,7 +15,7 @@ const LoginModel = ({ isOpen, onClose, setUser }) => {
 
   const handleGoogleAuth = async () => {
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(getFirebaseAuth(), provider);
       const token = await result.user.getIdToken();
 
       const response = await api.post("/api/auth/login", { token });
@@ -29,7 +29,7 @@ const LoginModel = ({ isOpen, onClose, setUser }) => {
         navigate("/dashboard", { replace: true });
       }
     } catch (error) {
-      console.log("Error in Login", error.message);
+      console.error("Firebase login failed:", error.message);
     }
   };
 

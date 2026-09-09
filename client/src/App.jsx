@@ -52,7 +52,9 @@ const App = () => {
   useEffect(() => {
     const getResumeData = async () => {
       const result = await getResume()
-      dispatch(setResume(result.data))
+      if (result?.data) {
+        dispatch(setResume(result.data))
+      }
     };
 
     getResumeData()

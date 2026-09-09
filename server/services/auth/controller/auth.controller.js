@@ -95,6 +95,13 @@ export const useCoins = async (req, res) => {
     }
 
     const session = await redis.get(`session:${sessionId}`);
+    if (!session) {
+      return res.status(401).json({
+        success: false,
+        message: "Session expired. Please log in again.",
+      });
+    }
+
     const sessionData = JSON.parse(session);
     const { coins, action } = req.body;
 

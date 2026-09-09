@@ -95,6 +95,7 @@ export default function ResumeBuilder({ user, setUser }) {
             isOpen={showPreview}
             onClose={handleClosePreview}
             data={data}
+            setUser={setUser}
           />
         </Suspense>
       )}

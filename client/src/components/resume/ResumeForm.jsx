@@ -164,7 +164,7 @@ function ResumeForm({ step, data = {}, setData }) {
           value={data.summary}
         />
         <p className="text-[10px] text-black/50">
-          Leave empty to skip or keep it concise for standard ATS scoring.
+          Keep it short and job-focused. Mention your target role, top strengths, and 3-5 relevant keywords.
         </p>
       </div>
     );
@@ -182,7 +182,9 @@ function ResumeForm({ step, data = {}, setData }) {
           onChange={handleFieldChange}
           value={data.skills}
         />
-        <p className="text-[10px] text-black/50">Separate skills with commas.</p>
+        <p className="text-[10px] text-black/50">
+          Add role-specific keywords and technologies. Separate each skill with a comma for cleaner ATS matching.
+        </p>
       </div>
     );
   }
@@ -198,6 +200,10 @@ function ResumeForm({ step, data = {}, setData }) {
             No experience entries added yet. Click below to add your job history.
           </p>
         )}
+
+        <p className="text-[10px] text-black/50">
+          Use action-oriented bullets and focus on measurable impact, tools used, and business outcomes.
+        </p>
 
         {experiences.map((exp, index) => (
           <EntryCard
@@ -274,6 +280,10 @@ function ResumeForm({ step, data = {}, setData }) {
           </p>
         )}
 
+        <p className="text-[10px] text-black/50">
+          Add project titles, technologies, and concise descriptions that show problem-solving and real impact.
+        </p>
+
         {projects.map((proj, index) => (
           <EntryCard
             key={index}
@@ -349,6 +359,10 @@ function ResumeForm({ step, data = {}, setData }) {
           </p>
         )}
 
+        <p className="text-[10px] text-black/50">
+          Keep dates, institution names, and scores clear and consistent for a clean ATS-friendly layout.
+        </p>
+
         {educations.map((edu, index) => (
           <EntryCard
             key={index}
@@ -422,6 +436,10 @@ function ResumeForm({ step, data = {}, setData }) {
             No additional info added yet. Add certifications, awards, or languages below.
           </p>
         )}
+
+        <p className="text-[10px] text-black/50">
+          Use this section for certifications, achievements, or languages that strengthen ATS keyword matching.
+        </p>
 
         {additional.map((item, index) => (
           <EntryCard

@@ -1,7 +1,10 @@
 import fs from "fs";
 import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
 // fs is for checking if the folder is empty or not
-const uploadPath = "../uploads";
+const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
+const uploadPath = path.resolve(currentDirectory, "../../../uploads");
 
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath);

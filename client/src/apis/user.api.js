@@ -11,12 +11,13 @@ export const getCurrentUser = async () => {
 };
 
 
-export const useCoins = async (data)=>{
+export const spendCoins = async (data) => {
   try{
     const response = await api.post("/api/auth/use-coins", data);
     return response.data;
   }
   catch(error){
+    console.log(error);
     return null;
 
   }

@@ -16,7 +16,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import api from "../utils/axios.js";
 import { setResume } from "../redux/resumeSlice.js";
-import {useCoins} from "../apis/user.api.js";
+import { spendCoins } from "../apis/user.api.js";
 
 // Animation Variants
 const containerVariants = {
@@ -81,7 +81,11 @@ const Scorer = ({ user, setUser }) => {
     try {
       setLoading(true);
 
-      const coinResponse = await useCoins({ coins: 10 , action: "resume-scorer" });
+      const coinResponse = await spendCoins({ coins: 10, action: "resume-scorer" });
+      if (!coinResponse?.success) {
+        throw new Error(coinResponse?.message || "Unable to process resume scoring payment.");
+      }
+
       setUser((prev)=>({
         ...prev,interviewCoin:coinResponse?.interviewCoin
       }));
@@ -133,11 +137,11 @@ const Scorer = ({ user, setUser }) => {
           "GraphQL & Microservices Architecture"
         ];
 
-    const suggestedRoles = (resume?.suggestedRole?.length > 0)
-      ? resume.suggestedRole
-      : (resume?.suggestedRole?.length > 0)
-      ? resume.suggestedRole
-      : [
+    const suggestedRoles = (Array.isArray(resume?.suggestedRoles) && resume.suggestedRoles.length > 0)
+      ? resume.suggestedRoles
+      : (resume?.suggestedRole
+        ? [{ title: resume.suggestedRole, match: "Best Match", level: "Recommended", reason: "Based on your resume profile." }]
+        : [
           {
             title: "Backend Engineer (Node.js)",
             match: "94% Match",
@@ -156,7 +160,7 @@ const Scorer = ({ user, setUser }) => {
             level: "Entry - Mid",
             reason: "Practical containerization foundation with potential to expand in CI/CD pipeline automation."
           }
-        ];
+        ])
 
     return (
       <div className="min-h-screen bg-[#FBFBFB] text-[#0A0A0A]">
