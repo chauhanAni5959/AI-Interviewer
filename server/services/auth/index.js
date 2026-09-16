@@ -16,9 +16,12 @@ app.get("/", (req, res) => {
 });
 
 app.use("/", authRouter);
-app.listen(PORT, () => {
-  console.log(`Auth server is running on port ${PORT}`);
-  connectDB();
-});
+
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Auth server is running on port ${PORT}`);
+    connectDB();
+  });
+}
 
 export default app;

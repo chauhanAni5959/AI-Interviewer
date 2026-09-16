@@ -17,9 +17,11 @@ app.get("/", (req, res) => {
 
 app.use("/",interviewRouter);
 
-app.listen(PORT, () => {
-  console.log(`Interview service is running on port ${PORT}`);
-  connectDB();
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Interview service is running on port ${PORT}`);
+    connectDB();
+  });
+}
 
 export default app;

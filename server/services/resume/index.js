@@ -15,9 +15,11 @@ app.get("/", (req, res) => {
 
 app.use("/", resumeRouter);
 
-app.listen(PORT, () => {
-  console.log(`Resume service is running on port ${PORT}`);
-  connectDB();
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Resume service is running on port ${PORT}`);
+    connectDB();
+  });
+}
 
 export default app;

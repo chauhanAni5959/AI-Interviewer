@@ -29,9 +29,28 @@ app.get("/", (req, res) => {
 });
 
 // Proxy routes (Place before express.json() if you want proxying to stream raw request bodies reliably)
-app.use("/api/auth", proxy(process.env.AUTH_SERVICE_URL));
-app.use("/api/resume", isAuth, proxyWithHeader(process.env.RESUME_SERVICE_URL));
-app.use("/api/interview", isAuth, proxyWithHeader(process.env.INTERVIEW_SERVICE_URL));
+const authProxyHandler = process.env.AUTH_SERVICE_URL
+  ? proxy(process.env.AUTH_SERVICE_URL)
+  : (req, res) => {
+      res.status(503).json({ message: "Auth service not configured" });
+    };
+
+const resumeProxyHandler = process.env.RESUME_SERVICE_URL
+  ? proxyWithHeader(process.env.RESUME_SERVICE_URL)
+  : (req, res) => {
+      res.status(503).json({ message: "Resume service not configured" });
+    };
+
+const interviewProxyHandler = process.env.INTERVIEW_SERVICE_URL
+  ? proxyWithHeader(process.env.INTERVIEW_SERVICE_URL)
+  : (req, res) => {
+      res.status(503).json({ message: "Interview service not configured" });
+    };
+
+app.use("/api/auth", authProxyHandler);
+app.use("/api/resume", isAuth, resumeProxyHandler);
+app.use("/api/interview", isAuth, interviewProxyHandler);
+
 // It is for current user and I have also added the middleware
 app.get("/api/me", isAuth, getCurrentUser);
 
@@ -40,8 +59,10 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 8000;
 
-app.listen(PORT, () => {
-  console.log(`Gateway server is running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Gateway server is running on port ${PORT}`);
+  });
+}
 
 export default app;
