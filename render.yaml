@@ -14,6 +14,7 @@ services:
   - type: web
     name: ai-interviewer-gateway
     runtime: node
+    plan: free
     rootDir: server/gateway
     buildCommand: npm ci
     startCommand: npm start
@@ -58,6 +59,7 @@ services:
   - type: web
     name: ai-interviewer-auth
     runtime: node
+    plan: free
     rootDir: server/services/auth
     buildCommand: npm ci
     startCommand: npm start
@@ -83,6 +85,7 @@ services:
   - type: web
     name: ai-interviewer-resume
     runtime: node
+    plan: free
     rootDir: server/services/resume
     buildCommand: npm ci
     startCommand: npm start
@@ -100,6 +103,7 @@ services:
   - type: web
     name: ai-interviewer-interview
     runtime: node
+    plan: free
     rootDir: server/services/interview
     buildCommand: npm ci
     startCommand: npm start
@@ -119,6 +123,7 @@ services:
   - type: web
     name: ai-interviewer-pricing
     runtime: node
+    plan: free
     rootDir: server/services/pricing
     buildCommand: npm ci
     startCommand: npm start
@@ -138,6 +143,7 @@ services:
   - type: web
     name: ai-interviewer-roadmap
     runtime: node
+    plan: free
     rootDir: server/services/roadmap
     buildCommand: npm ci
     startCommand: npm start
