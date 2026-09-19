@@ -47,9 +47,16 @@ const interviewProxyHandler = process.env.INTERVIEW_SERVICE_URL
       res.status(503).json({ message: "Interview service not configured" });
     };
 
+const pricingProxyHandler = process.env.PRICING_SERVICE_URL
+  ? proxyWithHeader(process.env.PRICING_SERVICE_URL)
+  : (req, res) => {
+      res.status(503).json({ message: "Pricing service not configured" });
+    };
+
 app.use("/api/auth", authProxyHandler);
 app.use("/api/resume", isAuth, resumeProxyHandler);
 app.use("/api/interview", isAuth, interviewProxyHandler);
+app.use("/api/pricing", isAuth, pricingProxyHandler);
 
 // It is for current user and I have also added the middleware
 app.get("/api/me", isAuth, getCurrentUser);

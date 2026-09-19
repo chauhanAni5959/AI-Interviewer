@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiFileText } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiFileText, FiUploadCloud } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 import api from "../../utils/axios";
+import { setResume } from "../../redux/resumeSlice";
 
 const interviewTypes = [
   {
@@ -34,11 +35,13 @@ const roleOptions = [
 
 function Step1setup({ user, setUser }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { resume } = useSelector((state) => state.resume);
 
   const [selectedType, setSelectedType] = useState("technical");
   const [selectedRole, setSelectedRole] = useState("Frontend Developer");
   const [useResume, setUseResume] = useState(Boolean(resume));
+  const [resumeFile, setResumeFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -67,15 +70,39 @@ function Step1setup({ user, setUser }) {
       return;
     }
 
+    if (useResume && !resume && !resumeFile) {
+      setError("Please upload your resume or turn off resume context.");
+      return;
+    }
+
     try {
       setLoading(true);
       setError("");
 
+      let interviewResume = resume;
+
+      if (useResume && !interviewResume && resumeFile) {
+        const formData = new FormData();
+        formData.append("resume", resumeFile);
+
+        const uploadResponse = await api.post("/api/resume/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        interviewResume = uploadResponse?.data?.data;
+
+        if (!interviewResume) {
+          throw new Error("Resume could not be processed.");
+        }
+
+        dispatch(setResume(interviewResume));
+      }
+
       const response = await api.post("/api/interview/start", {
         type: selectedType,
         role: normalizedRole,
-        useResume: Boolean(resume) && useResume,
-        resume: resume || {},
+        useResume: Boolean(interviewResume) && useResume,
+        resume: interviewResume || {},
       });
 
       if (response?.data?.success && response.data.interviewId) {
@@ -89,6 +116,21 @@ function Step1setup({ user, setUser }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleResumeFileChange = (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      setResumeFile(null);
+      setError("Please upload your resume as a PDF file.");
+      return;
+    }
+
+    setResumeFile(file);
+    setError("");
   };
 
   return (
@@ -166,7 +208,7 @@ function Step1setup({ user, setUser }) {
               </div>
 
               <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
-                <label className="flex cursor-pointer items-start justify-between gap-4">
+                  <label className="flex cursor-pointer items-start justify-between gap-4">
                   <div>
                     <p className="text-sm font-semibold text-neutral-900">Use my resume for context</p>
                     <p className="mt-1 text-xs text-neutral-500">
@@ -180,10 +222,31 @@ function Step1setup({ user, setUser }) {
                     type="checkbox"
                     checked={useResume}
                     onChange={() => setUseResume((prev) => !prev)}
-                    disabled={!resume}
-                    className="mt-1 h-4 w-4 rounded border-neutral-300 text-neutral-950 focus:ring-neutral-900 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="mt-1 h-4 w-4 rounded border-neutral-300 text-neutral-950 focus:ring-neutral-900"
                   />
                 </label>
+
+                {useResume && !resume && (
+                  <div className="mt-4 border-t border-neutral-200 pt-4">
+                    <label
+                      htmlFor="interview-resume"
+                      className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-neutral-300 bg-white px-4 py-3 text-sm font-semibold text-neutral-700 transition hover:border-neutral-500 hover:bg-neutral-50"
+                    >
+                      <FiUploadCloud size={17} />
+                      {resumeFile ? resumeFile.name : "Upload resume PDF"}
+                    </label>
+                    <input
+                      id="interview-resume"
+                      type="file"
+                      accept="application/pdf,.pdf"
+                      onChange={handleResumeFileChange}
+                      className="sr-only"
+                    />
+                    <p className="mt-2 text-xs text-neutral-500">
+                      Your resume will be analyzed before the interview starts.
+                    </p>
+                  </div>
+                )}
               </div>
 
               {error && (

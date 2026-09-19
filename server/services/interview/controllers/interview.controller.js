@@ -133,6 +133,12 @@ export const submitAnswer = async (req, res) => {
 
     if (isCompleted) {
       interview.status = "completed";
+      const questionScores = interview.questions
+        .map((question) => Number(question.feedback?.score))
+        .filter((score) => Number.isFinite(score));
+      interview.overallscore = questionScores.length
+        ? Math.round(questionScores.reduce((total, score) => total + score, 0) / questionScores.length)
+        : 0;
       interview.summary = result.report?.summary;
       interview.strengths = result.report?.strengths;
       interview.weaknesses = result.report?.weaknesses;

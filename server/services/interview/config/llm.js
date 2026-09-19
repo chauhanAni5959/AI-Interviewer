@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
-dotenv.config();
+dotenv.config({ override: true });
 
 const apiKey = (process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "").trim();
 
@@ -17,7 +17,7 @@ if (!/^AIza[0-9A-Za-z\-_]+$/.test(apiKey)) {
 }
 
 const llm = new ChatGoogleGenerativeAI({
-  model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
+  model: process.env.GEMINI_MODEL || "gemini-3.6-flash",
   apiKey,
   temperature: 0.1,
   maxOutputTokens: 2500,

@@ -1,8 +1,9 @@
 import React from "react";
-import { FiArrowLeft, FiCheckCircle, FiMic, FiSend, FiVideo } from "react-icons/fi";
+import { FiArrowLeft, FiMic, FiVideo } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 import maleAiVideo from "../../assets/male-ai.mp4";
 import femaleAiVideo from "../../assets/female-ai.mp4";
+import InterviewVoicePanel from "./InterviewVoicePanel";
 
 function Step2interview({
   interviewData,
@@ -134,46 +135,19 @@ function Step2interview({
                 </p>
               </div>
 
-              <div className="rounded-3xl border border-neutral-200 bg-white p-4 sm:p-5">
-                <div className="mb-3 flex items-center justify-between">
-                  <label htmlFor="answer" className="text-sm font-semibold text-neutral-700">
-                    Your answer
-                  </label>
-                  <span className="text-xs text-neutral-500">Auto-saved locally</span>
+              <InterviewVoicePanel
+                question={currentQuestion?.question}
+                answer={answer}
+                setAnswer={setAnswer}
+                onSubmit={onSubmitAnswer}
+                submitting={submitting}
+              />
+
+              {error && (
+                <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                  {error}
                 </div>
-
-                <textarea
-                  id="answer"
-                  value={answer}
-                  onChange={(e) => setAnswer(e.target.value)}
-                  rows={8}
-                  placeholder="Write your response here..."
-                  className="w-full rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 shadow-sm outline-none transition focus:border-neutral-900"
-                />
-
-                {error && (
-                  <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-                    {error}
-                  </div>
-                )}
-
-                <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-center gap-2 text-xs text-neutral-500">
-                    <FiCheckCircle size={14} className="text-emerald-600" />
-                    Your response will be evaluated after submission
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={onSubmitAnswer}
-                    disabled={submitting}
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-70"
-                  >
-                    {submitting ? "Submitting..." : "Submit answer"}
-                    {!submitting && <FiSend size={16} />}
-                  </button>
-                </div>
-              </div>
+              )}
             </div>
 
             <aside className="rounded-3xl bg-neutral-950 p-5 text-white">

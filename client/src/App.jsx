@@ -11,6 +11,7 @@ import ResumeBuilder from "./pages/ResumeBuilder";
 import InterviewStart from "./pages/InterviewStart";
 import InterviewPage from "./pages/InterviewPage";
 import InterviewReport from "./pages/InterviewReport";
+import Pricing from "./pages/Pricing";
 
 const STORAGE_KEY = "ai_interviewer_user";
 
@@ -147,6 +148,13 @@ const App = () => {
           ) : (
             <Navigate to="/" replace />
           )
+        }
+      />
+
+      <Route
+        path="/pricing"
+        element={
+          user ? <Pricing user={user} setUser={setUser} /> : <Navigate to="/" replace />
         }
       />
     </Routes>

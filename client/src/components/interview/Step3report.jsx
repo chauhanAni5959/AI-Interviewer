@@ -1,9 +1,17 @@
-import React from "react";
 import { FiArrowLeft, FiCheckCircle, FiFileText, FiTrendingUp } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 
-function Step3report({ report, user, setUser, onBack = () => {} }) {
-  const score = report?.overallscore ?? report?.overallScore ?? 0;
+function Step3report({ report, onBack = () => {} }) {
+  const savedScore = report?.overallscore ?? report?.overallScore;
+  const questionScores = (report?.questions || [])
+    .map((question) => Number(question.feedback?.score))
+    .filter((value) => Number.isFinite(value) && value >= 0 && value <= 100);
+  const calculatedScore = questionScores.length
+    ? Math.round(questionScores.reduce((total, value) => total + value, 0) / questionScores.length)
+    : 0;
+  const score = Number.isFinite(Number(savedScore)) && Number(savedScore) > 0
+    ? Number(savedScore)
+    : calculatedScore;
   const strengths = report?.strengths?.length ? report.strengths : ["Good communication", "Clear reasoning"];
   const weaknesses = report?.weaknesses?.length ? report.weaknesses : ["Continue practicing time-boxed answers."];
   const recommendations = report?.recommendations?.length

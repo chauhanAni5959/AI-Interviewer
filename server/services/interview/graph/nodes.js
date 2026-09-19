@@ -17,7 +17,7 @@ export async function interviewNode(state) {
 
 export async function feedbackNode(state) {
   const feedback = await feedbackAgent({
-    questions: state.questions,
+    question: state.question,
     answer: state.answer,
     difficulty: state.difficulty,
   })
