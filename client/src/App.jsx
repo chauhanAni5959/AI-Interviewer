@@ -12,6 +12,8 @@ import InterviewStart from "./pages/InterviewStart";
 import InterviewPage from "./pages/InterviewPage";
 import InterviewReport from "./pages/InterviewReport";
 import Pricing from "./pages/Pricing";
+import RoadmapBuilder from "./pages/RoadmapBuilder";
+import Profile from "./pages/Profile";
 
 const STORAGE_KEY = "ai_interviewer_user";
 
@@ -155,6 +157,18 @@ const App = () => {
         path="/pricing"
         element={
           user ? <Pricing user={user} setUser={setUser} /> : <Navigate to="/" replace />
+        }
+      />
+      <Route
+        path="/roadmap"
+        element={
+          user ? <RoadmapBuilder user={user} /> : <Navigate to="/" replace />
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          user ? <Profile user={user} setUser={setUser} /> : <Navigate to="/" replace />
         }
       />
     </Routes>

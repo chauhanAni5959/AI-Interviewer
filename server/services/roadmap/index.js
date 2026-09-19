@@ -1,23 +1,24 @@
 import express from "express";
 import dotenv from "dotenv";
-dotenv.config();
 import { connectDB } from "./config/db.js";
-import resumeRouter from "./routes/resume.router.js";
+import roadmapRouter from "./routes/roadmap.routes.js";
+
+dotenv.config({ override: true });
 
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.PORT;
+const PORT = process.env.ROADMAP_PORT || 6005;
 
 app.get("/", (req, res) => {
-  res.send("Hello from the Resume-service");
+  res.send("Hello from the Roadmap service");
 });
 
-app.use("/", resumeRouter);
+app.use("/", roadmapRouter);
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
-    console.log(`Resume service is running on port ${PORT}`);
+    console.log(`Roadmap service is running on port ${PORT}`);
     connectDB();
   });
 }

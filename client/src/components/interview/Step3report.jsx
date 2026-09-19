@@ -155,9 +155,16 @@ function Step3report({ report, onBack = () => {} }) {
 
               {(report?.questions || []).map((question, index) => (
                 <div key={index} className="rounded-3xl border border-neutral-200 bg-white p-4 sm:p-5">
-                  <p className="text-sm font-semibold text-neutral-900">
-                    {index + 1}. {question.question}
-                  </p>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <p className="text-sm font-semibold text-neutral-900">
+                      {index + 1}. {question.question}
+                    </p>
+                    <span className="shrink-0 rounded-full bg-neutral-950 px-3 py-1 text-xs font-semibold text-white">
+                      Score: {Number.isFinite(Number(question.feedback?.score))
+                        ? Number(question.feedback.score)
+                        : 0}/100
+                    </span>
+                  </div>
 
                   <div className="mt-3 grid gap-3 md:grid-cols-2">
                     <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-3">

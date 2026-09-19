@@ -120,6 +120,7 @@ export const submitAnswer = async (req, res) => {
     const result = await graph.invoke({
       action: "feedback",
       question: currentQuestion.question,
+      questionIndex: index,
       answer,
       difficulty: currentQuestion.difficulty,
       completed: isCompleted,
@@ -196,6 +197,35 @@ export const getInterview = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getRecentInterviews = async (req, res) => {
+  try {
+    const userId = req.headers["x-user-id"];
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "User ID is required in headers",
+      });
+    }
+
+    const interviews = await Interview.find({ userId })
+      .sort({ createdAt: -1 })
+      .limit(50)
+      .lean();
+
+    return res.status(200).json({
+      success: true,
+      interviews,
+    });
+  } catch (error) {
+    console.error("getRecentInterviews error:", error);
     return res.status(500).json({
       success: false,
       message: error.message,

@@ -23,7 +23,18 @@ export async function feedbackNode(state) {
   })
 
   return {
-    feedback
+    feedback,
+    questions: Array.isArray(state.questions)
+      ? state.questions.map((question, index) => {
+        const questionData = typeof question?.toObject === "function"
+          ? question.toObject()
+          : question;
+
+        return index === state.questionIndex
+          ? { ...questionData, feedback }
+          : questionData;
+      })
+      : state.questions,
   }
 }
 

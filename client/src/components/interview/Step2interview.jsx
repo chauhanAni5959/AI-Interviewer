@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { FiArrowLeft, FiMic, FiVideo } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 import maleAiVideo from "../../assets/male-ai.mp4";
@@ -61,7 +62,12 @@ function Step2interview({
           </div>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-[28px] border border-neutral-200 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)]">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          className="mt-6 overflow-hidden rounded-[28px] border border-neutral-200 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)]"
+        >
           <div className="border-b border-neutral-200 bg-neutral-50 px-6 py-5 sm:px-8">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -135,13 +141,19 @@ function Step2interview({
                 </p>
               </div>
 
-              <InterviewVoicePanel
-                question={currentQuestion?.question}
-                answer={answer}
-                setAnswer={setAnswer}
-                onSubmit={onSubmitAnswer}
-                submitting={submitting}
-              />
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
+              >
+                <InterviewVoicePanel
+                  question={currentQuestion?.question}
+                  answer={answer}
+                  setAnswer={setAnswer}
+                  onSubmit={onSubmitAnswer}
+                  submitting={submitting}
+                />
+              </motion.div>
 
               {error && (
                 <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -150,7 +162,12 @@ function Step2interview({
               )}
             </div>
 
-            <aside className="rounded-3xl bg-neutral-950 p-5 text-white">
+            <motion.aside
+              initial={{ opacity: 0, x: 14 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.45, delay: 0.2, ease: "easeOut" }}
+              className="rounded-3xl bg-neutral-950 p-5 text-white"
+            >
               <div className="flex items-center gap-2 text-sm font-semibold text-white/80">
                 <HiSparkles size={16} className="text-amber-300" />
                 Session overview
@@ -193,9 +210,9 @@ function Step2interview({
                   Retry permissions
                 </button>
               )}
-            </aside>
+            </motion.aside>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

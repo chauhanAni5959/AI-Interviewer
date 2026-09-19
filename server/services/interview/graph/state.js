@@ -8,6 +8,7 @@ const InterviewState = Annotation.Root({
   resume: Annotation(),
   questions: Annotation(),
   question: Annotation(),
+  questionIndex: Annotation(),
   answer: Annotation(),
   difficulty: Annotation(),
   feedback: Annotation(),

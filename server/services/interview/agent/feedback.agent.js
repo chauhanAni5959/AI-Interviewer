@@ -18,7 +18,11 @@ const normalizeFeedback = (feedback) => {
     throw new Error("Feedback must be a JSON object.");
   }
 
-  const normalized = { ...feedback };
+  const normalized = {
+    ...feedback,
+    score: feedback.score ?? feedback.overallScore,
+    improvement: feedback.improvement ?? feedback.improvements ?? [],
+  };
   for (const field of scoreFields) {
     const score = Number(normalized[field]);
     if (!Number.isFinite(score) || score < 0 || score > 100) {
@@ -31,15 +35,18 @@ const normalizeFeedback = (feedback) => {
     throw new Error("Feedback explanation is missing.");
   }
 
+  if (!Array.isArray(normalized.improvement)) {
+    throw new Error("Feedback improvements must be an array.");
+  }
+
   return normalized;
 };
 
 export const feedbackAgent = async (data) => {
   try {
-    const prompt = feedbackPrompt(data)
-      
+    const prompt = feedbackPrompt(data);
 
-    const response = await llm.invoke(prompt)
+    const response = await llm.invoke(prompt);
     const cleaned = response.content
     .replace(/```json/g, "")
     .replace(/```/g, "")
@@ -48,6 +55,6 @@ export const feedbackAgent = async (data) => {
     return normalizeFeedback(JSON.parse(cleaned));
   } catch (error) {
     console.error("Feedback Agent Parse Error!", error);
-    throw new Error("Failed to generate feedback!")
+    throw new Error("Failed to generate feedback!");
   }
 };

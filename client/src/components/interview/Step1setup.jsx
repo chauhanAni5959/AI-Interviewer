@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiFileText, FiUploadCloud } from "react-icons/fi";
@@ -135,7 +136,12 @@ function Step1setup({ user, setUser }) {
 
   return (
     <div className="min-h-screen bg-[#F7F7F7] text-[#0A0A0A]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10"
+      >
         <button
           type="button"
           onClick={() => navigate("/dashboard")}
@@ -162,14 +168,19 @@ function Step1setup({ user, setUser }) {
                   Interview type
                 </label>
                 <div className="grid gap-3 md:grid-cols-3">
-                  {interviewTypes.map((type) => {
+                  {interviewTypes.map((type, index) => {
                     const isSelected = selectedType === type.value;
 
                     return (
-                      <button
+                      <motion.button
                         key={type.value}
                         type="button"
                         onClick={() => setSelectedType(type.value)}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.35, delay: index * 0.06 }}
+                        whileHover={{ y: -2 }}
+                        whileTap={{ scale: 0.98 }}
                         className={`rounded-2xl border p-4 text-left transition-all cursor-pointer ${
                           isSelected
                             ? "border-neutral-950 bg-neutral-950 text-white shadow-lg"
@@ -183,7 +194,7 @@ function Step1setup({ user, setUser }) {
                         <p className={`mt-2 text-xs leading-5 ${isSelected ? "text-neutral-300" : "text-neutral-500"}`}>
                           {type.description}
                         </p>
-                      </button>
+                      </motion.button>
                     );
                   })}
                 </div>
@@ -266,7 +277,12 @@ function Step1setup({ user, setUser }) {
               </button>
             </div>
 
-            <aside className="rounded-3xl bg-neutral-950 p-5 text-white">
+            <motion.aside
+              initial={{ opacity: 0, x: 14 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.45, delay: 0.15, ease: "easeOut" }}
+              className="rounded-3xl bg-neutral-950 p-5 text-white"
+            >
               <div className="flex items-center gap-2 text-sm font-semibold text-white/80">
                 <HiSparkles size={16} className="text-amber-300" />
                 Session overview
@@ -291,10 +307,10 @@ function Step1setup({ user, setUser }) {
                   </p>
                 </div>
               </div>
-            </aside>
+            </motion.aside>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

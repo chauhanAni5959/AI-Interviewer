@@ -42,7 +42,7 @@ Return ONLY valid JSON.
 Example
 
 {
-  "overallScore":82,
+    "overallscore":82,
 
   "summary":"The candidate demonstrated strong backend development fundamentals with good understanding of REST APIs and authentication. Communication was clear but system design explanations lacked depth.",
 
