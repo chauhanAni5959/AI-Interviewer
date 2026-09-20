@@ -2,7 +2,7 @@ import "dotenv/config";
 import crypto from "crypto";
 import express from "express";
 import Razorpay from "razorpay";
-import redis from "../../../shared/redis/redis.js";
+import redis from "../utils/redis.js";
 import User from "../models/user.model.js";
 import Payment from "../models/payment.model.js";
 import { getPlan, pricingPlans } from "../config/plans.js";

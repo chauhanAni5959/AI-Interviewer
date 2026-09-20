@@ -3,7 +3,7 @@ import fsSync from "fs";
 import { resumeAgent } from "../agents/resume.agent.js";
 import extractedText from "../config/pdf.js";
 import Resume from "../models/resume.model.js";
-import redis from "../../../shared/redis/redis.js";
+import redis from "../utils/redis.js";
 
 // Helper function to safely parse JSON from AI response
 const parseAIJSON = (text) => {

@@ -2,7 +2,7 @@ import { app } from "../configs/firebase.js";
 import { getAuth } from "firebase-admin/auth";
 import User from "../models/user.models.js";
 import crypto from "crypto";
-import redis from "../../../shared/redis/redis.js";
+import redis from "../utils/redis.js";
 
 // Logged in controller for Google authentication
 export const GoogleAuth = async (req, res) => {
