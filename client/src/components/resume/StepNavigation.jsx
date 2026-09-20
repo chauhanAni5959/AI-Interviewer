@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import  { memo } from "react";
 import { FiChevronLeft, FiChevronRight, FiCheck, FiEye } from "react-icons/fi";
 
 const StepNavigation = memo(function StepNavigation({

@@ -5,7 +5,7 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 const apiKey =
-  import.meta.env.VITE_FIREBASE_APIKEY;
+  import.meta.env.VITE_FIREBASE_API_KEY;
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

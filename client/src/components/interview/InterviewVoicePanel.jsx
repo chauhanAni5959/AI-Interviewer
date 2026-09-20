@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import { FiMic, FiPause, FiPlay, FiRotateCcw, FiSend, FiSquare, FiTrash2 } from "react-icons/fi";
 import useSpeechRecognition from "../../hooks/useSpeechRecognition";
 import useSpeechSynthesis from "../../hooks/useSpeechSynthesis";

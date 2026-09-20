@@ -17,11 +17,17 @@ dotenv.config({
 });
 
 const app = express();
+const allowedOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const serviceUrl = (value) =>
+  value && /^https?:\/\//.test(value) ? value : `https://${value}`;
 
 // CORS configuration
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: allowedOrigins,
     credentials: true,
   }),
 );
@@ -36,31 +42,31 @@ app.get("/", (req, res) => {
 
 // Proxy routes (Place before express.json() if you want proxying to stream raw request bodies reliably)
 const authProxyHandler = process.env.AUTH_SERVICE_URL
-  ? proxy(process.env.AUTH_SERVICE_URL)
+  ? proxy(serviceUrl(process.env.AUTH_SERVICE_URL))
   : (req, res) => {
       res.status(503).json({ message: "Auth service not configured" });
     };
 
 const resumeProxyHandler = process.env.RESUME_SERVICE_URL
-  ? proxyWithHeader(process.env.RESUME_SERVICE_URL)
+  ? proxyWithHeader(serviceUrl(process.env.RESUME_SERVICE_URL))
   : (req, res) => {
       res.status(503).json({ message: "Resume service not configured" });
     };
 
 const interviewProxyHandler = process.env.INTERVIEW_SERVICE_URL
-  ? proxyWithHeader(process.env.INTERVIEW_SERVICE_URL)
+  ? proxyWithHeader(serviceUrl(process.env.INTERVIEW_SERVICE_URL))
   : (req, res) => {
       res.status(503).json({ message: "Interview service not configured" });
     };
 
 const pricingProxyHandler = process.env.PRICING_SERVICE_URL
-  ? proxyWithHeader(process.env.PRICING_SERVICE_URL)
+  ? proxyWithHeader(serviceUrl(process.env.PRICING_SERVICE_URL))
   : (req, res) => {
       res.status(503).json({ message: "Pricing service not configured" });
     };
 
 const roadmapProxyHandler = process.env.ROADMAP_SERVICE_URL
-  ? proxyWithHeader(process.env.ROADMAP_SERVICE_URL)
+  ? proxyWithHeader(serviceUrl(process.env.ROADMAP_SERVICE_URL))
   : (req, res) => {
       res.status(503).json({ message: "Roadmap service not configured" });
     };

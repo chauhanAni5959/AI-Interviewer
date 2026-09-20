@@ -7,7 +7,7 @@ import resumeRouter from "./routes/resume.router.js";
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 6002;
 
 app.get("/", (req, res) => {
   res.send("Hello from the Resume-service");

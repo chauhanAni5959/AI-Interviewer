@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, lazy, Suspense } from "react";
+import { useState, useCallback, useMemo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ResumeForm from "../components/resume/ResumeForm.jsx";
 import initialData from "../components/resume/initialData.js";

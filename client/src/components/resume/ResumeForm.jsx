@@ -1,4 +1,3 @@
-import React from "react";
 import { FiTrash2, FiPlus } from "react-icons/fi";
 
 function Input({

@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { FiArrowLeft, FiMic, FiVideo } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
