@@ -42,8 +42,8 @@ export const GoogleAuth = async (req, res) => {
     );
     res.cookie("session", sessionId, {
       httpOnly: true,
-      secure: false,
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: 7 * 1000 * 60 * 60 * 24, // 7 days
     });
 
@@ -72,8 +72,8 @@ export const logOut = async (req, res) => {
 
     res.clearCookie("session", {
       httpOnly: true,
-      secure: false,
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
     });
 
     return res

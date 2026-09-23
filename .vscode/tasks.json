@@ -1,0 +1,28 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Push Render fixes",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"add",
+				"render.yaml",
+				"server/services/roadmap/index.js",
+				"server/services/auth/configs/firebase.js"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Commit Render fixes",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"commit -m \"Fix Render service configuration and Redis mapping\""
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
