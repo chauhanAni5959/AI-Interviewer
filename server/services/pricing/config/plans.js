@@ -26,6 +26,7 @@ export const pricingPlans = [
     description: "The best value for a serious preparation sprint.",
     featured: false,
   },
+  
 ];
 
 export const getPlan = (planId) => pricingPlans.find((plan) => plan.id === planId);
