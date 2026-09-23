@@ -103,6 +103,10 @@ services:
         sync: false
       - key: GEMINI_API_KEY
         sync: false
+      - key: REDIS_URL
+        fromDatabase:
+          name: ai-interviewer-redis
+          property: connectionString
 
   - type: web
     name: ai-interviewer-interview
@@ -143,6 +147,10 @@ services:
         sync: false
       - key: RAZORPAY_KEY_SECRET
         sync: false
+      - key: REDIS_URL
+        fromDatabase:
+          name: ai-interviewer-redis
+          property: connectionString
 
   - type: web
     name: ai-interviewer-roadmap
